@@ -75,7 +75,8 @@ def generate_cc_impl(ctx):
       outputs = out_files,
       executable = ctx.executable._protoc,
       arguments = arguments,
-      use_default_shell_env = True,
+      use_default_shell_env = ctx.attr.use_default_shell_env,
+      env = ctx.attr.env,
   )
 
   return struct(files=depset(out_files))
@@ -107,6 +108,13 @@ _generate_cc = rule(
             default = Label("//external:protocol_compiler"),
             executable = True,
             cfg = "host",
+        ),
+        "use_default_shell_env": attr.bool(
+          default = False,
+          mandatory = False,
+        ),
+        "env": attr.string_dict(
+          allow_empty = True,
         ),
     },
     # We generate .h files, so we need to output to genfiles.

@@ -39,6 +39,8 @@ def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mo
       name = codegen_target,
       srcs = [proto_target],
       well_known_protos = well_known_protos,
+      use_default_shell_env = use_default_shell_env,
+      env = env,
       **kwargs
   )
 
@@ -72,8 +74,6 @@ def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mo
         srcs = [":" + codegen_grpc_target, ":" + codegen_target],
         hdrs = [":" + codegen_grpc_target, ":" + codegen_target],
         deps = deps + grpc_deps,
-        use_default_shell_env = use_default_shell_env,
-        env = env,
         **kwargs
     )
   else:

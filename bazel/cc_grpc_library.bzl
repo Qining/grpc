@@ -2,7 +2,7 @@
 
 load("//:bazel/generate_cc.bzl", "generate_cc")
 
-def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mocks = False, use_external = False, **kwargs):
+def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mocks = False, use_external = False, use_default_shell_env=False, env={}, **kwargs):
   """Generates C++ grpc classes from a .proto file.
 
   Assumes the generated classes will be used in cc_api_version = 2.
@@ -55,6 +55,8 @@ def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mo
         plugin = plugin,
         well_known_protos = well_known_protos,
         generate_mocks = generate_mocks,
+        use_default_shell_env = use_default_shell_env,
+        env = env,
         **kwargs
     )
 
@@ -70,6 +72,8 @@ def cc_grpc_library(name, srcs, deps, proto_only, well_known_protos, generate_mo
         srcs = [":" + codegen_grpc_target, ":" + codegen_target],
         hdrs = [":" + codegen_grpc_target, ":" + codegen_target],
         deps = deps + grpc_deps,
+        use_default_shell_env = use_default_shell_env,
+        env = env,
         **kwargs
     )
   else:
